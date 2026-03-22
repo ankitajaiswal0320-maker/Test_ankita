@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+  namespace: product
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+
+      nodeSelector:
+        role: backend
+
+      tolerations:
+      - key: "backend"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+
+      containers:
+      - name: product-service
+        image: 509521484072.dkr.ecr.eu-north-1.amazonaws.com/product-service:latest
+        ports:
+        - containerPort: 5002
